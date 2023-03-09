@@ -15,7 +15,6 @@ import { SafeArea } from "./src/components/utility/safe-area.component";
 import { Text } from "react-native";
 import { Provider } from "react-redux";
 import { store } from "./src/store/store";
-import test from "./src/features/restaurants/screens/test";
 
 
 const Tab = createBottomTabNavigator();

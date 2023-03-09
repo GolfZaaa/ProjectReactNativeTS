@@ -11,8 +11,10 @@
   "dependencies": {
     "@expo-google-fonts/lato": "^0.2.3",
     "@expo-google-fonts/oswald": "^0.2.3",
+    "@react-native-masked-view/masked-view": "^0.2.8",
     "@react-navigation/bottom-tabs": "^6.5.6",
     "@react-navigation/native": "^6.1.5",
+    "@react-navigation/stack": "^6.3.16",
     "@reduxjs/toolkit": "^1.9.3",
     "@types/styled-components-react-native": "^5.2.1",
     "camelize-ts": "^2.3.0",

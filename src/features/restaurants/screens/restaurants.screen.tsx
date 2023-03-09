@@ -1,11 +1,15 @@
 import { FlatList, SafeAreaView, StatusBar, StyleSheet } from "react-native";
-import React, { useState } from "react";
-import { Searchbar } from "react-native-paper";
+import React, { useEffect, useState } from "react";
+import { Searchbar ,ActivityIndicator, MD2Colors } from "react-native-paper";
 import RestaurantInfoCard from "../components/restaurant-info-card.component";
 import styled from "styled-components/native";
 import { Spacer } from "../../../components/spacer/spacer.component";
-import { listres } from "../../../store/counter/counterSlice";
-import { useAppSelector } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { Search } from "../components/search.component";
+import {
+  restaurantsRequest, restaurantsTransform,
+} from "../../../services/restaurants/restaurants.service";
+import { setError, setIsLoading, setRestaurants } from "../../../store/counter/restaurantSlice";
 
 
 const SafeArea = styled(SafeAreaView)`
@@ -23,33 +27,74 @@ const RestaurantList = styled(FlatList).attrs({
   },
 })``;
 
+const Loading = styled(ActivityIndicator)`
+  margin-left: -25px;
+`;
 
-
-
+const LoadingContainer = styled.View`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+`;
 
 export default function RestaurantsScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const onChangeSearch = (query:any) => setSearchQuery(query);
 
-  const {value} = useAppSelector((state) => state.posts)
+  const dispatch = useAppDispatch()
+  const { isLoading ,restaurants } = useAppSelector((state) => state.restaurant)
+
+  const { location } = useAppSelector((state) => state.location)
+
+
+  const retrieveRestaurants = (loc:any) => {
+    dispatch(setIsLoading(true));
+    setTimeout(() => {
+      restaurantsRequest(loc)
+        .then(restaurantsTransform)
+        .then((results) => {
+          dispatch(setIsLoading(false));
+          dispatch(setRestaurants(results));
+        })
+        .catch((err) => {
+          dispatch(setIsLoading(false));
+          dispatch(setError(err));
+        });
+    }, 2000);
+  };
+
+  useEffect(() => {
+    if (location) {
+      const locationString = `${location.lat},${location.lng}`;
+      retrieveRestaurants(locationString);
+    }
+  }, [location]);
+
+
+
 
   return (
     <SafeArea>
-      <SearchContainer>
-        <Searchbar
-          placeholder="Search"
-          onChangeText={onChangeSearch}
-          value={searchQuery}
-        />
-      </SearchContainer>
+      {isLoading && (
+        <LoadingContainer>
+          <Loading size={50} animating={true} color={MD2Colors.purple900} />
+        </LoadingContainer>
+      )}
+      <Search />
       <RestaurantList
-        data={value}
-        renderItem={({item,i}:any) => (
-          <Spacer position="bottom" size="large">
-            <RestaurantInfoCard />
+        data={restaurants}
+        renderItem={({ item, i }: any) => {
+          
+
+          return(
+            <Spacer position="bottom" size="large">
+            <RestaurantInfoCard restaurant={item}  />
           </Spacer>
-        )}
-        keyExtractor={(_,index:any) => index}
+          );
+
+
+        }}
+        keyExtractor={(_, index: any) => index}
       />
     </SafeArea>
   );
