@@ -25,7 +25,7 @@ export const locationSlice = createSlice({
       state.keyword = action.payload
     },
     setLocation: (state,action) => {
-        state.isLoading = action.payload
+        state.location = action.payload
       },
       setIsLoading: (state,action) => {
         state.isLoading = action.payload

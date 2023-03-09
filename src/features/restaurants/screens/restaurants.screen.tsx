@@ -38,8 +38,6 @@ const LoadingContainer = styled.View`
 `;
 
 export default function RestaurantsScreen() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const onChangeSearch = (query:any) => setSearchQuery(query);
 
   const dispatch = useAppDispatch()
   const { isLoading ,restaurants } = useAppSelector((state) => state.restaurant)
@@ -49,6 +47,7 @@ export default function RestaurantsScreen() {
 
   const retrieveRestaurants = (loc:any) => {
     dispatch(setIsLoading(true));
+    dispatch(setRestaurants([]));
     setTimeout(() => {
       restaurantsRequest(loc)
         .then(restaurantsTransform)
@@ -70,7 +69,7 @@ export default function RestaurantsScreen() {
     }
   }, [location]);
 
-
+  // console.log(location)
 
 
   return (

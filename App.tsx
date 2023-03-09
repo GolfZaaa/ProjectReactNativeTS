@@ -1,4 +1,5 @@
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
+import 'react-native-gesture-handler';
 import React from "react";
 import RestaurantsScreen from "./src/features/restaurants/screens/restaurants.screen";
 import { ThemeProvider } from "styled-components/native";
@@ -15,6 +16,7 @@ import { SafeArea } from "./src/components/utility/safe-area.component";
 import { Text } from "react-native";
 import { Provider } from "react-redux";
 import { store } from "./src/store/store";
+import { Navigation } from "./src/infrastructure/navigation";
 
 
 const Tab = createBottomTabNavigator();
@@ -65,15 +67,7 @@ export default function App() {
     <>
       <ThemeProvider theme={theme}>
         <Provider store={store}>
-        <NavigationContainer>
-          <Tab.Navigator
-            screenOptions={createScreenOptions}
-          >
-            <Tab.Screen name="Restaurants" component={RestaurantsScreen} />
-            <Tab.Screen name="Map" component={Map} />
-            <Tab.Screen name="Settings" component={Settings} />
-          </Tab.Navigator>
-        </NavigationContainer>
+        <Navigation/>
         </Provider>
       </ThemeProvider>
       <ExpoStatusBar style="auto" />

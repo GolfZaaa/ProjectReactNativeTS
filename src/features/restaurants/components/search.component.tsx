@@ -18,8 +18,8 @@ export const Search = () => {
   
   
   const onSearch = (searchKeyword:any) => {
-    setIsLoading(true);
-    setKeyword(searchKeyword);
+    dispatch(setIsLoading(true));
+    dispatch(setKeyword(searchKeyword));
   };
 
   useEffect(() => {
@@ -30,12 +30,12 @@ export const Search = () => {
     locationRequest(keyword.toLowerCase())
       .then(locationTransform)
       .then((result) => {
-        setIsLoading(false);
-        setLocation(result);
+        dispatch(setIsLoading(false));
+        dispatch(setLocation(result));
       })
       .catch((err) => {
-        setIsLoading(false);
-        setError(err);
+        dispatch(setIsLoading(false));
+        dispatch(setError(err));
       });
   }, [keyword]);
 
