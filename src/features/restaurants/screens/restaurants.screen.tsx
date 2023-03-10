@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView, StatusBar, StyleSheet } from "react-native";
+import { FlatList, SafeAreaView, StatusBar, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Searchbar ,ActivityIndicator, MD2Colors } from "react-native-paper";
 import RestaurantInfoCard from "../components/restaurant-info-card.component";
@@ -9,7 +9,8 @@ import { Search } from "../components/search.component";
 import {
   restaurantsRequest, restaurantsTransform,
 } from "../../../services/restaurants/restaurants.service";
-import { setError, setIsLoading, setRestaurants } from "../../../store/counter/restaurantSlice";
+import { setError, setIsLoading, setIsToggled, setRestaurants } from "../../../store/counter/restaurantSlice";
+import { FavouritesBar } from "../../../components/favourite/favourites-bar.component";
 
 
 const SafeArea = styled(SafeAreaView)`
@@ -37,10 +38,10 @@ const LoadingContainer = styled.View`
   left: 50%;
 `;
 
-export default function RestaurantsScreen() {
+export default function RestaurantsScreen({navigation }:any) {
 
   const dispatch = useAppDispatch()
-  const { isLoading ,restaurants } = useAppSelector((state) => state.restaurant)
+  const { isLoading ,restaurants,isToggled } = useAppSelector((state) => state.restaurant)
 
   const { location } = useAppSelector((state) => state.location)
 
@@ -79,16 +80,24 @@ export default function RestaurantsScreen() {
           <Loading size={50} animating={true} color={MD2Colors.purple900} />
         </LoadingContainer>
       )}
-      <Search />
+      <Search
+      is ={isToggled}
+      onFavouritesToggle={() => setIsToggled(!isToggled)}
+      />
+        {isToggled && <FavouritesBar />}
       <RestaurantList
         data={restaurants}
         renderItem={({ item, i }: any) => {
           
 
           return(
+
+            <TouchableOpacity  onPress={() => navigation.navigate("RestaurantDetail",{restaurant:item})}>
             <Spacer position="bottom" size="large">
             <RestaurantInfoCard restaurant={item}  />
           </Spacer>
+          </TouchableOpacity>
+
           );
 
 

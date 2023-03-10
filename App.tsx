@@ -17,7 +17,7 @@ import { Text } from "react-native";
 import { Provider } from "react-redux";
 import { store } from "./src/store/store";
 import { Navigation } from "./src/infrastructure/navigation";
-
+import 'react-native-gesture-handler';
 
 const Tab = createBottomTabNavigator();
 

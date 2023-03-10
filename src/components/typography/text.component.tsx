@@ -40,7 +40,7 @@ const variants:any = {
   hint,
 };
 
-export const Text = styled.Text<{variant:any}>`
+export const Text:any = styled.Text<{variant:any}>`
   ${({ theme }) => defaultTextStyles(theme)}
   ${({ variant, theme }) => variants[variant](theme)}
 `;

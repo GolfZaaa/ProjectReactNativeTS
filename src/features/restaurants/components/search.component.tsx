@@ -9,7 +9,7 @@ const SearchContainer = styled.View`
   padding: ${(props:any) => props.theme.space[3]};
 `;
 
-export const Search = () => {
+export const Search = ({isFavouritesToggled, onFavouritesToggle}:any) => {
 
   const dispatch = useAppDispatch()
   const { keyword } = useAppSelector((state) => state.location)
@@ -21,8 +21,9 @@ export const Search = () => {
     dispatch(setIsLoading(true));
     dispatch(setKeyword(searchKeyword));
   };
-
   useEffect(() => {
+    dispatch(setIsLoading(true));
+    dispatch(setKeyword(searchKeyword));
     if (!keyword.length) {
       // don't do anything
       return;
@@ -44,6 +45,8 @@ export const Search = () => {
     return (
       <SearchContainer>
         <Searchbar
+        icon={isFavouritesToggled ? "heart" : "heart-outline"}
+        onIconPress={onFavouritesToggle}
           placeholder="Search for a location"
           value={searchKeyword}
           onSubmitEditing={() => {

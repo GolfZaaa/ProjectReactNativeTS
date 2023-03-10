@@ -10,6 +10,7 @@ interface CounterState {
   restaurants:[],
   isLoading:Boolean,
   error:any,
+  isToggled:any,
 }
 
 const initialState: CounterState = {
@@ -17,6 +18,7 @@ const initialState: CounterState = {
   restaurants:[],
   isLoading:false,
   error:null,
+  isToggled:false,
 }
 
 
@@ -35,10 +37,13 @@ export const restaurantSlice = createSlice({
     setError:(state,action) =>{
       state.error = action.payload
     },
+    setIsToggled:(state,action) =>{
+      state.isToggled = action.payload
+    },
   },
 })
 
-export const { setIsLoading ,setRestaurants ,setError} = restaurantSlice.actions
+export const { setIsLoading ,setRestaurants ,setError,setIsToggled} = restaurantSlice.actions
 
 export const selectCount = (state: RootState) => state.restaurant
 

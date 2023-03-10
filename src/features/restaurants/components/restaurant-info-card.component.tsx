@@ -14,8 +14,14 @@ import {
   Icon,
   Address,
 } from "./restaurant-info-card.styles";
+import { Favourite } from "../../../components/favourite/favourite.component";
+import { View } from "react-native";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+
 
 export default function RestaurantInfoCard({restaurant = {}}:any) {
+
+  
   const {
     name = "Some Restaurant",
     icon = "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
@@ -33,13 +39,23 @@ export default function RestaurantInfoCard({restaurant = {}}:any) {
 
   return (
     <RestaurantCard elevation={5}>
-      <RestaurantCardCover key={name} source={{ uri: photos[0] }} />
+      
+      <View>
+      <Favourite restaurant={restaurant} />
+        <RestaurantCardCover key={name} source={{ uri: photos[0] }} />
+      </View>
+
       <Info>
         <Text variant="label">{name}</Text>
         <Section>
           <Rating>
             {ratingArray.map((_, index) => (
-              <SvgXml key={`star-${placeId}-${index}`} xml={star} width={20} height={20}  />
+              <SvgXml
+                key={`star-${placeId}-${index}`}
+                xml={star}
+                width={20}
+                height={20}
+              />
             ))}
           </Rating>
           <SectionEnd>
